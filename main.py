@@ -17,7 +17,7 @@ db = firestore.Client()
 
 def scape():
     for d in ['m','i']:
-        res = requests.get(f'http://math.dge.toyota-ct.ac.jp/katsutani/lssn/2020/ba2/wkprntans/index-f2{d}.html')
+        res = requests.get(f'{os.environ('root')}wkprntans/index-f2{d}.html')
         soup = BeautifulSoup(res.text, 'html.parser')
         source = soup.find_all('a',text=f'{month}/{date}')
         links = [url.get('href') for url in source]
@@ -25,12 +25,14 @@ def scape():
             m=links
         else:
             i=links
+    print(m,i)
     return m,i
 
 def correct(d):
     for n in d:
         num=n[4:8]
-        url = f'http://math.dge.toyota-ct.ac.jp/katsutani/lssn/2020/ba2/wkprntans/'+n
+        no=n[8:13]
+        url = f'{os.environ('root')}wkprntans/'+n
         savename = "/tmp/print.pdf"
         urllib.request.urlretrieve(url, savename)
 
@@ -39,22 +41,26 @@ def correct(d):
             page = reader.getPage(0)
             text = page.extractText()
             line = text.splitlines()
-            result = line[7]
+            try:
+                result = int(line[11])
+            except ValueError:
+                print("First")
+                result = None
         print(result)
-        DB(num,result)
+        DB(num,result,no)
         os.remove('/tmp/print.pdf')
     return 0
 
-def DB(num,result):
+def DB(num,result,no):
     d=num[1:2]
     setData = db.collection(d).document(num)
     # Set the capital field
     setData.set({
-        f'{year}/{month}/{date}': result
+        f'{year}/{month}/{date}/'+no: result
     }, merge=True)
     return 0
 
-def main():
+def main(request):
     m,i=scape()
     correct(m)
     correct(i)
