@@ -14,7 +14,7 @@
     - BeautifulSoup
     - PyPDF2
 - 定期実行させて、Firestoreに日付と正答数を記録
-### submitted
+### Hosting(Firebase)
 - Vue.js
     - tailwind.css
     - vuefire
