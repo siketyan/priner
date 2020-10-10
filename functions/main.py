@@ -12,7 +12,10 @@ year = datetime.date.today().year
 month = datetime.date.today().month
 date = datetime.date.today().day
 
-root = os.environ.get('root','failed')
+print(f'{year}/{month}/{date}')
+
+root = os.environ['root']
+print(root)
 
 # Project ID is determined by the GCLOUD_PROJECT environment variable
 db = firestore.Client()
@@ -33,7 +36,7 @@ def scape():
 def correct(d):
     for n in d:
         num=n[4:8]
-        no=int(n[8:13])
+        no=int(n[11:13])
         url = f'{root}wkprntans/'+n
         savename = "/tmp/print.pdf"
         urllib.request.urlretrieve(url, savename)
@@ -71,4 +74,4 @@ def main(request):
     m,i=scape()
     correct(m)
     correct(i)
-    return 0
+    return flask.make_response('finish')
