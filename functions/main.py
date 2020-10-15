@@ -12,12 +12,17 @@ year = datetime.date.today().year
 month = datetime.date.today().month
 date = datetime.date.today().day
 
+print(f'{year}/{month}/{date}')
+
+root = os.environ['root']
+print(root)
+
 # Project ID is determined by the GCLOUD_PROJECT environment variable
 db = firestore.Client()
 
 def scape():
     for d in ['m','i']:
-        res = requests.get(f'{os.environ('root')}wkprntans/index-f2{d}.html')
+        res = requests.get(f'{root}wkprntans/index-l2{d}.html')
         soup = BeautifulSoup(res.text, 'html.parser')
         source = soup.find_all('a',text=f'{month}/{date}')
         links = [url.get('href') for url in source]
@@ -31,8 +36,8 @@ def scape():
 def correct(d):
     for n in d:
         num=n[4:8]
-        no=n[8:13]
-        url = f'{os.environ('root')}wkprntans/'+n
+        no=int(n[11:13])
+        url = f'{root}wkprntans/'+n
         savename = "/tmp/print.pdf"
         urllib.request.urlretrieve(url, savename)
 
@@ -42,7 +47,7 @@ def correct(d):
             text = page.extractText()
             line = text.splitlines()
             try:
-                result = int(line[11])
+                result = int(line[9])
             except ValueError:
                 print("First")
                 result = None
@@ -52,11 +57,16 @@ def correct(d):
     return 0
 
 def DB(num,result,no):
-    d=num[1:2]
-    setData = db.collection(d).document(num)
-    # Set the capital field
+    setData = db.collection(num).document(str(no))
+    last = no-1
+    print(last)
+    if last==0:
+        pass
+    else:
+        db.collection(num).document(str(last)).update({u'score': result})
     setData.set({
-        f'{year}/{month}/{date}/'+no: result
+        u'date': f'{year}/{month}/{date}',
+        u'score': None
     }, merge=True)
     return 0
 
@@ -64,4 +74,4 @@ def main(request):
     m,i=scape()
     correct(m)
     correct(i)
-    return 0
+    return flask.make_response('finish')

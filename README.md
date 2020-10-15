@@ -9,12 +9,12 @@
     - Hosting
     - Cloud Firestore
 ## Structure
-### Functions(GCP)
+### functions
 - Python
     - BeautifulSoup
     - PyPDF2
 - 定期実行させて、Firestoreに日付と正答数を記録
-### submitted
+### hosting
 - Vue.js
     - tailwind.css
     - vuefire

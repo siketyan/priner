@@ -1,13 +1,13 @@
 <template>
- <div class="home">
-   <h1>正答数一覧</h1>
+ <div>
+   <div>{{User.depa}}{{User.num}}の正答数一覧</div>
    <li 
      v-for="post in posts"
      :key="post.id"
      class="list-none my-5"
    >
-     <h2 class="text-xl">{{ post.title }}</h2>
-     <p class="text-sm">{{ post.createAt }}</p>
+     <h2 class="text-xl">{{ post.score }}</h2>
+     <p class="text-sm">{{ post.date }}</p>
    </li>
  </div>
 </template>
@@ -15,7 +15,9 @@
 <script>
 import { db } from '@/main'
 export default {
-  name: 'home',
+  props:{
+      User: Object
+  },
   data() {
     return {
       posts: []
@@ -23,7 +25,7 @@ export default {
   },
   firestore() {
     return {
-      posts: db.collection('posts')
+      posts: db.collection("2"+"i"+"38")
     }
   }
 }
