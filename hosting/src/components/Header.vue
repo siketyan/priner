@@ -8,7 +8,7 @@
        <div class="w-10 h-10 rounded-full bg-black mr-2"></div>
        <div>
          <p>User</p>
-         <p class="-mt-1 text-sm">Log Out</p>
+         <p class="-mt-1 text-sm"><router-link to="/login">Log Out</router-link></p>
        </div>
      </div>
    </div>
