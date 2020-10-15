@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-
     <Header />
     <main class="my-16 mx-auto">
       <router-view/>
