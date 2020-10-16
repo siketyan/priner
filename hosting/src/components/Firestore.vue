@@ -1,6 +1,6 @@
 <template>
  <div>
-   <div>{{User.depa}}{{User.num}}の正答数一覧</div>
+   <div>2{{User.depa}}{{User.num}}の正答数一覧</div>
    <li 
      v-for="post in posts"
      :key="post.id"
@@ -16,7 +16,7 @@
 import { db } from '@/main'
 export default {
   props:{
-      User: Object
+    User: Object
   },
   data() {
     return {
@@ -25,7 +25,7 @@ export default {
   },
   firestore() {
     return {
-      posts: db.collection("2"+"i"+"38")
+      posts: db.collection("2"+this.User.depa+this.User.num)
     }
   }
 }
